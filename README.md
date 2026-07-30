@@ -1,4 +1,4 @@
-# SN76489_STM32
+# Multiple-Sound-Chip-VGM-Player-STM32
 
 *(Türkçe aşağıda / English below)*
 
