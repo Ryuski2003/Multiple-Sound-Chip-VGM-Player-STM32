@@ -1,0 +1,8 @@
+../Core/Src/puff.c:126:11:bits	24	static
+../Core/Src/puff.c:164:11:stored	24	static
+../Core/Src/puff.c:263:11:decode	48	static
+../Core/Src/puff.c:340:11:construct	72	static
+../Core/Src/puff.c:436:11:codes	48	static
+../Core/Src/puff.c:536:11:fixed	600	static
+../Core/Src/puff.c:665:11:dynamic	1392	static
+../Core/Src/puff.c:793:5:puff	232	static

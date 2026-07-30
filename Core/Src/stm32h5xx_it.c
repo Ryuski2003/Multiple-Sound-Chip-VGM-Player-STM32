@@ -24,7 +24,9 @@
 /* USER CODE BEGIN Includes */
 //#include "StereoMadness.h"
 #include "SMB_Overworld.h"
-#include "SN76489.h"
+#include "vgm.h"
+#include "YM2151.h"
+#include "msm6295.h"
 #include <string.h>
 #include <stdlib.h>
 /* USER CODE END Includes */
@@ -32,11 +34,19 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
 
-uint32_t drumIndex = 0;
 uint32_t drumDACIncrement = 0;
 uint8_t triangleOffset = 0;
 uint8_t attenValue;
+uint32_t last_tick;
+static uint32_t last_tick_pf12 = 0;
+static uint32_t last_tick_pd10 = 0;
+static uint32_t last_tick_pg7  = 0;
+static uint32_t last_tick_pa0  = 0;
 
+volatile uint8_t list_button = 0;
+volatile uint8_t speed_reset_button = 0;
+
+extern volatile int8_t song_change;
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -52,6 +62,7 @@ uint8_t attenValue;
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
 
+volatile uint8_t timerRunning = 1;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -70,12 +81,14 @@ float bpm = BPM, bpmIncrements[3] = {0.1, 1, 10};
 uint8_t bpmIncrementIndex = 1;
 float beatDuration;
 
+extern volatile uint16_t wait_samples;
+
 uint16_t noteData;
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
 extern TIM_HandleTypeDef htim2;
-extern TIM_HandleTypeDef htim3;
+extern TIM_HandleTypeDef htim4;
 /* USER CODE BEGIN EV */
 extern float noteDurationMelody, noteDurationMelody2, noteDurationBass, drumDuration;
 extern uint8_t solo1, solo2, solo3, solo4, solo5;
@@ -97,23 +110,18 @@ uint32_t noteSize = sizeof(melodyNotes)/sizeof(melodyNotes[0]);
 uint32_t noteSize2 = sizeof(melodyNotes2)/sizeof(melodyNotes2[0]);
 uint32_t noteSize3 = sizeof(bassNotes)/sizeof(bassNotes[0]);
 
-static void ToneMelody(uint16_t frequency)
+/*static void ToneMelody(uint16_t frequency)
 {
-	setNote(frequency, TONE1);
+
 }
 static void ToneMelody2(uint16_t frequency)
 {
-	setNote(frequency, TONE2);
+
 }
 static void ToneBass(uint16_t frequency)
 {
-	setNote(frequency, TONE3);
-}
 
-void pausePlay(void){
-
-
-}
+}*/
 
 /* USER CODE END EV */
 
@@ -256,88 +264,97 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles EXTI Line0 interrupt.
+  */
+void EXTI0_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI0_IRQn 0 */
+  if(HAL_GetTick() - last_tick_pa0 > 200){
+	  speed_reset_button = 1;
+	  last_tick_pa0 = HAL_GetTick();
+  }
+  /* USER CODE END EXTI0_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(SPEED_RST_Pin);
+  /* USER CODE BEGIN EXTI0_IRQn 1 */
+
+  /* USER CODE END EXTI0_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI Line7 interrupt.
+  */
+void EXTI7_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI7_IRQn 0 */
+  if(HAL_GetTick() - last_tick_pg7 > 50){
+	  list_button = 1;
+	  last_tick_pg7 = HAL_GetTick();
+  }
+  /* USER CODE END EXTI7_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_7);
+  /* USER CODE BEGIN EXTI7_IRQn 1 */
+
+  /* USER CODE END EXTI7_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI Line10 interrupt.
+  */
+void EXTI10_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI10_IRQn 0 */
+  if(HAL_GetTick() - last_tick_pd10 > 200){
+	  song_change = 1;
+	  last_tick_pd10 = HAL_GetTick();
+  }
+  /* USER CODE END EXTI10_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_10);
+  /* USER CODE BEGIN EXTI10_IRQn 1 */
+
+  /* USER CODE END EXTI10_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI Line12 interrupt.
+  */
+void EXTI12_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI12_IRQn 0 */
+  if(HAL_GetTick() - last_tick_pf12 > 200){
+	  song_change = -1;
+	  last_tick_pf12 = HAL_GetTick();
+  }
+  /* USER CODE END EXTI12_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_12);
+  /* USER CODE BEGIN EXTI12_IRQn 1 */
+
+  /* USER CODE END EXTI12_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI Line14 interrupt.
+  */
+void EXTI14_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI14_IRQn 0 */
+	if(HAL_GetTick() - last_tick > 50){
+			timerRunning = !timerRunning;
+			last_tick = HAL_GetTick();
+		}
+  /* USER CODE END EXTI14_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_14);
+  /* USER CODE BEGIN EXTI14_IRQn 1 */
+
+  /* USER CODE END EXTI14_IRQn 1 */
+}
+
+/**
   * @brief This function handles TIM2 global interrupt.
   */
 void TIM2_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM2_IRQn 0 */
-	if(!tone1Sent){
-		triangleOffset = 0;
-		memcpy(currentNoteMelody, melodyNotes[noteIndexMelody], sizeof(currentNoteMelody));
-		if (currentNoteMelody[0] != 0){
-
-			if(tone1Muted){
-				tone1Muted = 0;
-				sendByte(TONE1_ATTEN | ATTEN_0DB);
-			}
-			ToneMelody((uint32_t)currentNoteMelody[0]);
-			TIM3->ARR = 1000000/(60*currentNoteMelody[0]) - 1;
-		}
-		else{
-			sendByte(TONE1_MUTE);
-			tone1Muted = 1;
-		}
-		tone1Sent = 1;
-	}
-	noteDurationMelody += 0.025;
-	if (noteDurationMelody >= beatDuration*currentNoteMelody[1]){
-		noteDurationMelody = 0;
-		noteIndexMelody++;
-		tone1Sent = 0;
-	}
-	if(noteIndexMelody >= noteSize)
-		noteIndexMelody = 0;
-
-	if(!tone2Sent){
-		memcpy(currentNoteMelody2, melodyNotes2[noteIndexMelody2], sizeof(currentNoteMelody2));
-		if (currentNoteMelody2[0] != 0){
-			if(tone2Muted){
-				tone2Muted = 0;
-				sendByte(TONE2_ATTEN | ATTEN_0DB);
-			}
-
-			ToneMelody2((uint16_t)currentNoteMelody2[0]);
-		}
-		else{
-			sendByte(TONE2_MUTE);
-			tone2Muted = 1;
-		}
-		tone2Sent = 1;
-	}
-	noteDurationMelody2 += 0.025;
-	if (noteDurationMelody2 >= beatDuration*currentNoteMelody2[1]){
-		noteDurationMelody2 = 0;
-		noteIndexMelody2++;
-		tone2Sent = 0;
-	}
-	if(noteIndexMelody2 >= noteSize2)
-		noteIndexMelody2 = 0;
-
-	if(!tone3Sent){
-		memcpy(currentNoteBass, bassNotes[noteIndexBass], sizeof(currentNoteBass));
-		if (currentNoteBass[0] != 0){
-			if(tone3Muted){
-				tone3Muted = 0;
-				sendByte(TONE3_ATTEN | ATTEN_8DB);
-			}
-
-			ToneBass(2*(uint16_t)currentNoteBass[0]);
-		}
-		else{
-			sendByte(TONE3_MUTE);
-			tone3Muted = 1;
-		}
-		tone3Sent = 1;
-	}
-	noteDurationBass += 0.025;
-	if (noteDurationBass >= beatDuration*currentNoteBass[1]){
-		noteDurationBass = 0;
-		noteIndexBass++;
-		tone3Sent = 0;
-	}
-	if(noteIndexBass >= noteSize3)
-		noteIndexBass = 0;
-
+  VGM_Update();
   /* USER CODE END TIM2_IRQn 0 */
   HAL_TIM_IRQHandler(&htim2);
   /* USER CODE BEGIN TIM2_IRQn 1 */
@@ -346,17 +363,18 @@ void TIM2_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles TIM3 global interrupt.
+  * @brief This function handles TIM4 global interrupt.
   */
-void TIM3_IRQHandler(void)
+void TIM4_IRQHandler(void)
 {
-  /* USER CODE BEGIN TIM3_IRQn 0 */
+  /* USER CODE BEGIN TIM4_IRQn 0 */
+  int16_t sample = MSM6295_Update();
+  DAC1->DHR12R1 = (uint16_t)(((int32_t)sample/2 + 2048) & 0xFFF);
+  /* USER CODE END TIM4_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim4);
+  /* USER CODE BEGIN TIM4_IRQn 1 */
 
-  /* USER CODE END TIM3_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim3);
-  /* USER CODE BEGIN TIM3_IRQn 1 */
-
-  /* USER CODE END TIM3_IRQn 1 */
+  /* USER CODE END TIM4_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

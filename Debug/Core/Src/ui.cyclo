@@ -1,0 +1,12 @@
+../Core/Src/ui.c:68:6:UI_Init	4
+../Core/Src/ui.c:86:13:draw_progress_bar	5
+../Core/Src/ui.c:107:13:draw_activity	11
+../Core/Src/ui.c:142:6:UI_Update	16
+../Core/Src/ui.c:210:9:UI_GetMode	1
+../Core/Src/ui.c:214:5:UI_GetSelectedIndex	1
+../Core/Src/ui.c:219:13:draw_list_row	5
+../Core/Src/ui.c:230:13:draw_full_page	2
+../Core/Src/ui.c:238:6:UI_EnterFileList	1
+../Core/Src/ui.c:246:6:UI_ExitFileList	1
+../Core/Src/ui.c:251:6:UI_MoveCursor	10
+../Core/Src/ui.c:276:6:UI_MoveCursorByPage	7

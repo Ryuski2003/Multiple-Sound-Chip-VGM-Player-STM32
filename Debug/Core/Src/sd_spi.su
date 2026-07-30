@@ -1,0 +1,7 @@
+../Core/Src/sd_spi.c:24:13:spi_set_prescaler	16	static
+../Core/Src/sd_spi.c:30:16:spi_byte	32	static
+../Core/Src/sd_spi.c:38:13:spi_read_buf	24	static
+../Core/Src/sd_spi.c:47:16:sd_cmd	24	static
+../Core/Src/sd_spi.c:71:11:SD_Init	40	static
+../Core/Src/sd_spi.c:179:11:SD_ReadBlock	32	static
+../Core/Src/sd_spi.c:217:13:SD_GetType	4	static

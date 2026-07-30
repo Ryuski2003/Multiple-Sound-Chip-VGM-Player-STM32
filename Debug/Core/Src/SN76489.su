@@ -1,2 +1,5 @@
-../Core/Src/SN76489.c:11:6:sendByte	24	static
-../Core/Src/SN76489.c:25:6:setNote	16	static
+../Core/Src/SN76489.c:9:6:SN76489_Init	16	static
+../Core/Src/SN76489.c:15:6:SN76489_Write	32	static,ignoring_inline_asm
+../Core/Src/SN76489.c:33:9:SN76489_GetAttenuation	16	static
+../Core/Src/SN76489.c:37:6:SN76489_MuteAll	8	static
+../Core/Src/SN76489.c:44:6:SN76489_UnmuteAll	8	static

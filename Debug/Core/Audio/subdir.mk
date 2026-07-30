@@ -4,6 +4,9 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
+S_SRCS += \
+../Core/Audio/vgm_data.s 
+
 S_UPPER_SRCS += \
 ../Core/Audio/hihat.S \
 ../Core/Audio/kick.S \
@@ -14,7 +17,11 @@ OBJS += \
 ./Core/Audio/hihat.o \
 ./Core/Audio/kick.o \
 ./Core/Audio/snare1.o \
-./Core/Audio/snare2.o 
+./Core/Audio/snare2.o \
+./Core/Audio/vgm_data.o 
+
+S_DEPS += \
+./Core/Audio/vgm_data.d 
 
 S_UPPER_DEPS += \
 ./Core/Audio/hihat.d \
@@ -26,11 +33,13 @@ S_UPPER_DEPS += \
 # Each subdirectory must supply rules for building sources it contributes
 Core/Audio/%.o: ../Core/Audio/%.S Core/Audio/subdir.mk
 	arm-none-eabi-gcc -mcpu=cortex-m33 -g3 -DDEBUG -c -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "$@" "$<"
+Core/Audio/%.o: ../Core/Audio/%.s Core/Audio/subdir.mk
+	arm-none-eabi-gcc -mcpu=cortex-m33 -g3 -DDEBUG -c -x assembler-with-cpp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -o "$@" "$<"
 
 clean: clean-Core-2f-Audio
 
 clean-Core-2f-Audio:
-	-$(RM) ./Core/Audio/hihat.d ./Core/Audio/hihat.o ./Core/Audio/kick.d ./Core/Audio/kick.o ./Core/Audio/snare1.d ./Core/Audio/snare1.o ./Core/Audio/snare2.d ./Core/Audio/snare2.o
+	-$(RM) ./Core/Audio/hihat.d ./Core/Audio/hihat.o ./Core/Audio/kick.d ./Core/Audio/kick.o ./Core/Audio/snare1.d ./Core/Audio/snare1.o ./Core/Audio/snare2.d ./Core/Audio/snare2.o ./Core/Audio/vgm_data.d ./Core/Audio/vgm_data.o
 
 .PHONY: clean-Core-2f-Audio
 

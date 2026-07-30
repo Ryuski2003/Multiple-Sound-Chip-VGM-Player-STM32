@@ -1,0 +1,5 @@
+../Core/Src/SI5351.c:22:13:WriteReg	32	static
+../Core/Src/SI5351.c:27:13:WriteBlock	40	static
+../Core/Src/SI5351.c:34:6:SI5351_Init	8	static
+../Core/Src/SI5351.c:39:6:SI5351_OutputEnable	16	static
+../Core/Src/SI5351.c:51:6:SI5351_SetFrequency	208	static

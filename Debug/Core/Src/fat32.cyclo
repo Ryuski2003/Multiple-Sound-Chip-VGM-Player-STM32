@@ -1,0 +1,12 @@
+../Core/Src/fat32.c:15:17:ru16	1
+../Core/Src/fat32.c:18:17:ru32	1
+../Core/Src/fat32.c:22:17:cluster_lba	1
+../Core/Src/fat32.c:26:17:next_cluster	2
+../Core/Src/fat32.c:36:5:FAT32_Init	9
+../Core/Src/fat32.c:64:13:to_83	11
+../Core/Src/fat32.c:79:5:FAT32_FindFile	10
+../Core/Src/fat32.c:109:13:from_83	6
+../Core/Src/fat32.c:126:5:FAT32_FindFileByIndex	11
+../Core/Src/fat32.c:161:5:FAT32_CacheAllNames	12
+../Core/Src/fat32.c:188:5:FAT32_CountFiles	9
+../Core/Src/fat32.c:211:5:FAT32_ReadBytes	8

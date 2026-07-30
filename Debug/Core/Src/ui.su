@@ -1,0 +1,12 @@
+../Core/Src/ui.c:68:6:UI_Init	24	static
+../Core/Src/ui.c:86:13:draw_progress_bar	104	static
+../Core/Src/ui.c:107:13:draw_activity	40	static
+../Core/Src/ui.c:142:6:UI_Update	136	static
+../Core/Src/ui.c:210:9:UI_GetMode	4	static
+../Core/Src/ui.c:214:5:UI_GetSelectedIndex	4	static
+../Core/Src/ui.c:219:13:draw_list_row	40	static
+../Core/Src/ui.c:230:13:draw_full_page	24	static
+../Core/Src/ui.c:238:6:UI_EnterFileList	16	static
+../Core/Src/ui.c:246:6:UI_ExitFileList	8	static
+../Core/Src/ui.c:251:6:UI_MoveCursor	24	static
+../Core/Src/ui.c:276:6:UI_MoveCursorByPage	24	static

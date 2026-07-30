@@ -45,5 +45,10 @@
 #define ATTEN_28DB 0b1110
 #define ATTEN_30DB 0b1111 //Mutes channel.
 
-void setNote(uint16_t frequency, uint8_t toneChannel);
-void sendByte(uint8_t byte);
+void SN76489_Init(void);
+void SN76489_Write(uint8_t byte);
+void SN76489_MuteAll(void);
+void SN76489_UnmuteAll(void);
+
+/* channel: 0=Tone1,1=Tone2,2=Tone3,3=Noise. Returns: 0=loudest,15=silent. */
+uint8_t SN76489_GetAttenuation(uint8_t channel);

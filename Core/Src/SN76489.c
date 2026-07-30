@@ -1,36 +1,49 @@
 #include "SN76489.h"
 
-extern TIM_HandleTypeDef htim3;
-
 extern uint8_t ready;
 
-uint16_t tenBitData;
-uint8_t firstByte;
-uint8_t secondByte;
+/* Last attenuation value written per channel (0=loudest, 15=silent).
+   Kept as a shadow for the activity indicator without doing real audio analysis. */
+static uint8_t atten_shadow[4] = {15, 15, 15, 15};
 
-void sendByte(uint8_t byte){
-	HAL_GPIO_WritePin(GPIOC, WE_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOC, D0_Pin, (byte & 128)   ? GPIO_PIN_SET: GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, D1_Pin, (byte & 64)   	? GPIO_PIN_SET: GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, D2_Pin, (byte & 32)   	? GPIO_PIN_SET: GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOA, D3_Pin, (byte & 16)   	? GPIO_PIN_SET: GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOA, D4_Pin, (byte & 8)  	? GPIO_PIN_SET: GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOA, D5_Pin, (byte & 4)  	? GPIO_PIN_SET: GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, D6_Pin, (byte & 2)  	? GPIO_PIN_SET: GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOC, D7_Pin, (byte & 1) 	? GPIO_PIN_SET: GPIO_PIN_RESET);
+void SN76489_Init(void){
+	HAL_GPIO_WritePin(GPIOC, CE_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIOC, WE_Pin, GPIO_PIN_RESET);
-	for(int i = 0; i < 512; i++);
+	for (int i = 0; i < 4; i++) atten_shadow[i] = 15;
+}
+
+void SN76489_Write(uint8_t byte){
+	/* If it's a latch byte (bit7=1) of attenuation type (bit4=1), update the
+	   channel's shadow value: bits 6-5 channel (0=T1,1=T2,2=T3,3=Noise), bits 3-0 value. */
+	if (byte & 0x80) {
+		if (byte & 0x10) {
+			uint8_t channel = (byte >> 5) & 0x03;
+			atten_shadow[channel] = byte & 0x0F;
+		}
+	}
+
+	GPIOD->ODR = (GPIOD->ODR & 0xFF00) | (__RBIT(byte) >> 24);
+	HAL_GPIO_WritePin(GPIOC, WE_Pin, GPIO_PIN_RESET);
+	for(int i=0; i<50; i++)
+		__NOP();
 	HAL_GPIO_WritePin(GPIOC, WE_Pin, GPIO_PIN_SET);
 }
-void setNote(uint16_t frequency, uint8_t toneChannel){
-	firstByte = 0x80 | (toneChannel << 4);
-	secondByte = 0x00;
-	if(frequency != 0){
 
-		tenBitData = (CLOCK_FREQ/(32*frequency)); //10-bit Note Data
-		firstByte = (tenBitData & 0b1111) | (toneChannel << 4 | 0b10000000);
-		secondByte = (((tenBitData >> 4) & 0x3F));
-	}
-	sendByte(firstByte);
-	sendByte(secondByte);
+/* channel: 0=Tone1,1=Tone2,2=Tone3,3=Noise. Returns: 0=loudest,15=silent. */
+uint8_t SN76489_GetAttenuation(uint8_t channel) {
+	return (channel < 4) ? atten_shadow[channel] : 15;
+}
+
+void SN76489_MuteAll(void){
+	SN76489_Write(TONE1_MUTE);
+	SN76489_Write(TONE2_MUTE);
+	SN76489_Write(TONE3_MUTE);
+	SN76489_Write(NOISE_MUTE);
+}
+
+void SN76489_UnmuteAll(void){
+	SN76489_Write(TONE1_ATTEN);
+	SN76489_Write(TONE2_ATTEN);
+	SN76489_Write(TONE3_ATTEN);
+	SN76489_Write(NOISE_ATTEN);
 }

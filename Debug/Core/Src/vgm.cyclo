@@ -1,0 +1,15 @@
+../Core/Src/vgm.c:11:24:read_u32_le	1
+../Core/Src/vgm.c:50:5:VGM_LoadFromSD	12
+../Core/Src/vgm.c:93:6:VGM_ParseHeader	14
+../Core/Src/vgm.c:153:5:VGM_IsSN76489Active	1
+../Core/Src/vgm.c:157:5:VGM_IsYM2151Active	1
+../Core/Src/vgm.c:167:6:VGM_Init	1
+../Core/Src/vgm.c:176:5:VGM_TrackFinished	2
+../Core/Src/vgm.c:184:5:VGM_IsLoopModeOn	1
+../Core/Src/vgm.c:188:6:VGM_SetLoopMode	1
+../Core/Src/vgm.c:192:10:VGM_GetElapsedSeconds	1
+../Core/Src/vgm.c:196:10:VGM_GetTotalSeconds	1
+../Core/Src/vgm.c:200:5:VGM_HasLoopPoint	1
+../Core/Src/vgm.c:206:10:VGM_GetLoopStartSeconds	3
+../Core/Src/vgm.c:216:6:VGM_GetTrackTitle	13
+../Core/Src/vgm.c:235:6:VGM_Update	43

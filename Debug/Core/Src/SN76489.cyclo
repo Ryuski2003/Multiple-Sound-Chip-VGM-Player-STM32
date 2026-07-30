@@ -1,2 +1,5 @@
-../Core/Src/SN76489.c:11:6:sendByte	2
-../Core/Src/SN76489.c:25:6:setNote	2
+../Core/Src/SN76489.c:9:6:SN76489_Init	2
+../Core/Src/SN76489.c:15:6:SN76489_Write	4
+../Core/Src/SN76489.c:33:9:SN76489_GetAttenuation	2
+../Core/Src/SN76489.c:37:6:SN76489_MuteAll	1
+../Core/Src/SN76489.c:44:6:SN76489_UnmuteAll	1

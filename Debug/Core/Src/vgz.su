@@ -1,0 +1,2 @@
+../Core/Src/vgz.c:4:5:VGZ_IsGzip	16	static
+../Core/Src/vgz.c:12:10:VGZ_Inflate	48	static

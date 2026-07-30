@@ -1,0 +1,14 @@
+../Core/Src/YM2151.c:25:6:YM2151_SetMasterClockHz	16	static
+../Core/Src/YM2151.c:29:6:YM2151_Init	16	static
+../Core/Src/YM2151.c:62:6:YM2151_SetPins	16	static
+../Core/Src/YM2151.c:69:6:YM2151_Write	56	static,ignoring_inline_asm
+../Core/Src/YM2151.c:120:6:YM2151_Delay	24	static
+../Core/Src/YM2151.c:125:9:YM2151_GetKeyOn	16	static
+../Core/Src/YM2151.c:128:6:YM2151_Mute_KeyOff	16	static
+../Core/Src/YM2151.c:140:6:YM2151_Mute_TotalLevel	16	static
+../Core/Src/YM2151.c:154:6:YM2151_Mute_OutputDisable	16	static
+../Core/Src/YM2151.c:169:6:YM_System_All_Mute	8	static
+../Core/Src/YM2151.c:174:6:YM2151_Unmute_KeyOn	16	static
+../Core/Src/YM2151.c:188:6:YM2151_Unmute_TotalLevel	16	static
+../Core/Src/YM2151.c:200:6:YM2151_Unmute_OutputEnable	16	static
+../Core/Src/YM2151.c:217:6:YM_System_All_Unmute	8	static
