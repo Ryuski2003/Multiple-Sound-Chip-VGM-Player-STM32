@@ -51,6 +51,7 @@ STM32H5 tabanlı, gerçek ses çipleri süren bir donanımsal VGM/VGZ chiptune �
 
 - Arayüz şu an tamamen elle yazılmış (`ui.c` + `ILI9341.c`), **TouchGFX entegre değil**.
 - STM32H563'te LTDC olmadığından, TouchGFX eklenirse "MCU without display controller (SPI)" modu ve mevcut ILI9341 SPI sürücüsüne bağlanan özel bir framebuffer flush katmanı gerekecek — bu entegrasyon planlanıyor, henüz projede yok.
+<img width="1428" height="2048" alt="WhatsApp Image 2026-07-30 at 22 44 18 (1)" src="https://github.com/user-attachments/assets/4557284e-bdae-4384-bb6c-56f83b79f610" />
 
 ### Örnek VGM dosyaları (repo kökünde)
 
@@ -105,6 +106,7 @@ An STM32H5-based hardware VGM/VGZ chiptune player that drives real sound chips. 
 
 - The UI is currently entirely hand-written (`ui.c` + `ILI9341.c`) — **TouchGFX is not integrated**.
 - Since the STM32H563 has no LTDC, adding TouchGFX would require the "MCU without display controller (SPI)" mode plus a custom framebuffer flush layer hooked into the existing ILI9341 SPI driver — this integration is planned but not yet present in the project.
+<img width="1428" height="2048" alt="WhatsApp Image 2026-07-30 at 22 44 18 (1)" src="https://github.com/user-attachments/assets/1c700e0b-f54d-4510-8b7a-5e4c557c2c0e" />
 
 ### Sample VGM files (repo root)
 
