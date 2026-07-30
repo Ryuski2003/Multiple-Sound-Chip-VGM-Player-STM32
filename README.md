@@ -12,11 +12,11 @@ STM32H5 tabanlı, gerçek ses çipleri süren bir donanımsal VGM/VGZ chiptune �
 
 - **MCU:** STM32H563ZIT6 (Cortex-M33, LQFP144), STM32CubeIDE + STM32CubeMX (`SN76489_STM32.ioc`) ile yapılandırılmış, TrustZone devre dışı.
 - **Ses çipleri:**
-  - **SN76489** — 8-bit paralel veri/CE/WE hatlarıyla (PD0-PD7, PC5/PC6) sürülüyor.
-  - **YM2151** — 8-bit paralel arayüz (PF0-PF7 veri, PG9-PG13: IC/A0/WR/RD/CS).
-  - **MSM6295** — VGM verisindeki ROM içeriği RAM'e yüklenip yazma komutlarıyla sürülüyor.
-  - Her iki cip için master clock **SI5351** (I2C1, PB7/PB8) üzerinden üretiliyor.
-- **Ses çıkışı:** Dahili DAC (DAC1 CH1/CH2), TIM4 tetiklemeli örnekleme.
+  - **SN76489** (gerçek çip) — 8-bit paralel veri/CE/WE hatlarıyla (PD0-PD7, PC5/PC6) sürülüyor, kendi analog ses çıkışını üretiyor.
+  - **YM2151** (gerçek çip) — 8-bit paralel arayüz (PF0-PF7 veri, PG9-PG13: IC/A0/WR/RD/CS), kendi analog ses çıkışını üretiyor.
+  - **MSM6295** — gerçek çip değil; VGM verisindeki ADPCM ROM içeriği RAM'e yüklenip **yazılımda** (`msm6295.c`) çözülüyor (emülasyon), çıktısı dahili DAC'tan veriliyor.
+  - Master clock, SN76489 ve YM2151 için **SI5351** (I2C1, PB7/PB8) üzerinden üretiliyor (MSM6295 yazılım olduğundan clock gerektirmiyor).
+- **Ses çıkışı / mixing:** MSM6295 simülasyonu dahili DAC'tan (DAC1 CH1, TIM4 tetiklemeli örnekleme) veriliyor; SN76489, YM2151 ve DAC'tan gelen bu üç analog sinyal **TL072** op-amp ile kurulmuş bir **Summing Amplifier** (toplama amplifikatörü) devresinde mikslenip tek ses çıkışında birleştiriliyor.
 - **Ekran:** ILI9341 240x320 TFT, SPI1 üzerinden (elle yazılmış sürücü, `ILI9341.c`), portrait/BGR modda.
 - **Depolama:** microSD kart, SPI2 üzerinden, salt-okunur FAT32 (`fat32.c`, `sd_spi.c`).
 - **Girdi:**
@@ -67,11 +67,11 @@ An STM32H5-based hardware VGM/VGZ chiptune player that drives real sound chips. 
 
 - **MCU:** STM32H563ZIT6 (Cortex-M33, LQFP144), configured with STM32CubeIDE + STM32CubeMX (`SN76489_STM32.ioc`), TrustZone disabled.
 - **Sound chips:**
-  - **SN76489** — driven via an 8-bit parallel data bus and CE/WE lines (PD0-PD7, PC5/PC6).
-  - **YM2151** — 8-bit parallel interface (PF0-PF7 data, PG9-PG13: IC/A0/WR/RD/CS).
-  - **MSM6295** — ROM data from the VGM file is loaded into RAM and driven via write commands.
-  - Master clock for both chips is generated via an **SI5351** (I2C1, PB7/PB8).
-- **Audio output:** Internal DAC (DAC1 CH1/CH2), sampled via TIM4 trigger.
+  - **SN76489** (real chip) — driven via an 8-bit parallel data bus and CE/WE lines (PD0-PD7, PC5/PC6), produces its own analog audio output.
+  - **YM2151** (real chip) — 8-bit parallel interface (PF0-PF7 data, PG9-PG13: IC/A0/WR/RD/CS), produces its own analog audio output.
+  - **MSM6295** — not a real chip; ADPCM ROM data from the VGM file is loaded into RAM and decoded **in software** (`msm6295.c`, emulation), output through the internal DAC.
+  - Master clock for SN76489 and YM2151 is generated via an **SI5351** (I2C1, PB7/PB8); the MSM6295 emulation runs in software and needs no clock.
+- **Audio output / mixing:** The MSM6295 emulation is output via the internal DAC (DAC1 CH1, sampled via TIM4 trigger); the three analog signals from SN76489, YM2151, and the DAC are mixed into a single output by a **TL072** op-amp **summing amplifier** circuit.
 - **Display:** ILI9341 240x320 TFT over SPI1 (hand-written driver, `ILI9341.c`), portrait/BGR mode.
 - **Storage:** microSD card over SPI2, read-only FAT32 (`fat32.c`, `sd_spi.c`).
 - **Input:**
