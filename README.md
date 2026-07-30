@@ -22,7 +22,7 @@ STM32H5 tabanlı, gerçek ses çipleri süren bir donanımsal VGM/VGZ chiptune �
 - **Girdi:**
   - Rotary encoder (TIM3, X4 quadrature) — Now Playing modunda çalma hızını (0.5x-2.0x, pitch değişmeden, TIM2 periyodu ölçeklenerek), File List modunda sayfa gezintisini kontrol eder.
   - Butonlar (EXTI): SPEED_RST (hız sıfırlama), LOOP_SW/SHUFFLE_SW (kalıcı açık/kapalı switchler, pollanır), liste modu giriş/çıkış ve yukarı/aşağı navigasyon (basılı tutmada typematic tekrar).
-<img width="1024" height="720" alt="WhatsApp Image 2026-07-30 at 22 44 18" src="https://github.com/user-attachments/assets/d6af620e-1ddc-4578-b8b8-9aaa9d6e9e01" />
+<img width="512" height="360" alt="WhatsApp Image 2026-07-30 at 22 44 18" src="https://github.com/user-attachments/assets/d6af620e-1ddc-4578-b8b8-9aaa9d6e9e01" />
 
 ### Firmware yapısı (`Core/Src`)
 
@@ -51,7 +51,7 @@ STM32H5 tabanlı, gerçek ses çipleri süren bir donanımsal VGM/VGZ chiptune �
 
 - Arayüz şu an tamamen elle yazılmış (`ui.c` + `ILI9341.c`), **TouchGFX entegre değil**.
 - STM32H563'te LTDC olmadığından, TouchGFX eklenirse "MCU without display controller (SPI)" modu ve mevcut ILI9341 SPI sürücüsüne bağlanan özel bir framebuffer flush katmanı gerekecek — bu entegrasyon planlanıyor, henüz projede yok.
-<img width="714" height="1024" alt="WhatsApp Image 2026-07-30 at 22 44 18 (1)" src="https://github.com/user-attachments/assets/4557284e-bdae-4384-bb6c-56f83b79f610" />
+<img width="357" height="512" alt="WhatsApp Image 2026-07-30 at 22 44 18 (1)" src="https://github.com/user-attachments/assets/4557284e-bdae-4384-bb6c-56f83b79f610" />
 
 ### Örnek VGM dosyaları (repo kökünde)
 
@@ -77,7 +77,7 @@ An STM32H5-based hardware VGM/VGZ chiptune player that drives real sound chips. 
 - **Input:**
   - Rotary encoder (TIM3, X4 quadrature) — controls playback speed (0.5x-2.0x without pitch shift, via TIM2 period scaling) in Now Playing mode, and page navigation in File List mode.
   - Buttons (EXTI): SPEED_RST (reset speed), LOOP_SW/SHUFFLE_SW (persistent on/off switches, polled), list mode enter/exit, and up/down navigation (with typematic repeat on hold).
-<img width="1024" height="720" alt="WhatsApp Image 2026-07-30 at 22 44 18" src="https://github.com/user-attachments/assets/98b6667b-1e7d-4ffd-a9fa-f2a7c2174fb6" />
+<img width="512" height="360" alt="WhatsApp Image 2026-07-30 at 22 44 18" src="https://github.com/user-attachments/assets/98b6667b-1e7d-4ffd-a9fa-f2a7c2174fb6" />
 
 ### Firmware layout (`Core/Src`)
 
@@ -106,7 +106,7 @@ An STM32H5-based hardware VGM/VGZ chiptune player that drives real sound chips. 
 
 - The UI is currently entirely hand-written (`ui.c` + `ILI9341.c`) — **TouchGFX is not integrated**.
 - Since the STM32H563 has no LTDC, adding TouchGFX would require the "MCU without display controller (SPI)" mode plus a custom framebuffer flush layer hooked into the existing ILI9341 SPI driver — this integration is planned but not yet present in the project.
-<img width="714" height="1024" alt="WhatsApp Image 2026-07-30 at 22 44 18 (1)" src="https://github.com/user-attachments/assets/1c700e0b-f54d-4510-8b7a-5e4c557c2c0e" />
+<img width="357" height="512" alt="WhatsApp Image 2026-07-30 at 22 44 18 (1)" src="https://github.com/user-attachments/assets/1c700e0b-f54d-4510-8b7a-5e4c557c2c0e" />
 
 ### Sample VGM files (repo root)
 
