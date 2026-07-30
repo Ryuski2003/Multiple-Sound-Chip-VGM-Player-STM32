@@ -22,6 +22,7 @@ STM32H5 tabanlı, gerçek ses çipleri süren bir donanımsal VGM/VGZ chiptune �
 - **Girdi:**
   - Rotary encoder (TIM3, X4 quadrature) — Now Playing modunda çalma hızını (0.5x-2.0x, pitch değişmeden, TIM2 periyodu ölçeklenerek), File List modunda sayfa gezintisini kontrol eder.
   - Butonlar (EXTI): SPEED_RST (hız sıfırlama), LOOP_SW/SHUFFLE_SW (kalıcı açık/kapalı switchler, pollanır), liste modu giriş/çıkış ve yukarı/aşağı navigasyon (basılı tutmada typematic tekrar).
+<img width="2048" height="1439" alt="WhatsApp Image 2026-07-30 at 22 44 18" src="https://github.com/user-attachments/assets/d6af620e-1ddc-4578-b8b8-9aaa9d6e9e01" />
 
 ### Firmware yapısı (`Core/Src`)
 
@@ -75,6 +76,7 @@ An STM32H5-based hardware VGM/VGZ chiptune player that drives real sound chips. 
 - **Input:**
   - Rotary encoder (TIM3, X4 quadrature) — controls playback speed (0.5x-2.0x without pitch shift, via TIM2 period scaling) in Now Playing mode, and page navigation in File List mode.
   - Buttons (EXTI): SPEED_RST (reset speed), LOOP_SW/SHUFFLE_SW (persistent on/off switches, polled), list mode enter/exit, and up/down navigation (with typematic repeat on hold).
+<img width="2048" height="1439" alt="WhatsApp Image 2026-07-30 at 22 44 18" src="https://github.com/user-attachments/assets/98b6667b-1e7d-4ffd-a9fa-f2a7c2174fb6" />
 
 ### Firmware layout (`Core/Src`)
 
